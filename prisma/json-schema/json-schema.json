@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "default": "USER"
+        },
+        "isKycVerified": {
+          "type": "boolean",
+          "default": false
+        },
+        "deposits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Deposit"
+          }
+        },
+        "withdraws": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Withdraw"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Deposit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Withdraw": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "user": {
+      "$ref": "#/definitions/User"
+    },
+    "deposit": {
+      "$ref": "#/definitions/Deposit"
+    },
+    "withdraw": {
+      "$ref": "#/definitions/Withdraw"
+    }
+  }
+}

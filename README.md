@@ -31,16 +31,11 @@ bun add -g prisma
 
 ## Installation
 
-1. Clone the repository from github or gitlab:
+1. Clone the repository from github:
 
 ```bash
-git clone https://github.com/pgen0x/bunrestapi-boilerplate.git
-cd bunrestapi-boilerplate
-```
-
-```bash
-git clone https://ember9.snapinnovations.io/ilhamnst/restapi-boilerplate.git
-cd restapi-boilerplate
+git clone https://github.com/pgen0x/be-test.git
+cd be-test
 ```
 
 2. Install dependencies:
@@ -67,7 +62,7 @@ bun start
 ## Project Structure
 
 ```plaintext
-bun-boilerplate/
+be-test/
 ├── src/
 │ ├── config/ # Configuration
 │ ├── constants/ # Constants handlers

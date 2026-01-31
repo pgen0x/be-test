@@ -2,15 +2,30 @@ import prisma from '../../prisma/client';
 import { DEFAULT_SORT_ORDER } from '../constants';
 
 export class UserRepository {
-  static async findAll(limit: number = 10, offset: number = 0) {
+  static async findAll(limit: number = 10, offset: number = 0, search?: string) {
+    const where: any = {};
+
+    if (search) {
+      where.OR = [
+        { firstName: { contains: search, mode: 'insensitive' } },
+        { lastName: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { username: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
     return prisma.user.findMany({
+      where,
       select: {
         id: true,
         firstName: true,
         lastName: true,
         email: true,
+        username: true,
         role: true,
+        status: true,
         createdAt: true,
+        isKycVerified: true,
         updatedAt: true,
       },
       orderBy: {
@@ -25,8 +40,10 @@ export class UserRepository {
     firstName: string;
     lastName: string;
     email: string;
+    username: string;
     password: string;
     role: string;
+    status: string;
   }) {
     return prisma.user.create({ data });
   }
@@ -43,7 +60,9 @@ export class UserRepository {
         firstName: true,
         lastName: true,
         email: true,
+        username: true,
         role: true,
+        status: true,
         isKycVerified: true,
         createdAt: true,
         updatedAt: true,
@@ -51,7 +70,17 @@ export class UserRepository {
     });
   }
 
-  static async count() {
-    return prisma.user.count();
+  static async count(search?: string) {
+    const where: any = {};
+
+    if (search) {
+      where.OR = [
+        { firstName: { contains: search, mode: 'insensitive' } },
+        { lastName: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { username: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+    return prisma.user.count({ where });
   }
 }

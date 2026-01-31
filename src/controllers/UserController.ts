@@ -5,46 +5,52 @@ import { ErrorResponse, SuccessResponse } from '../utils/ApiResponse';
 
 export class UserController {
   /**
-   * Fetches all users in the database with pagination
+   * Fetches all users in the database with pagination and search
    * @swagger
    * /api/v1/users:
    *   get:
    *     tags:
    *       - Users
    *     security: [{"bearerAuth": []}]
-   *     summary: Fetches all users with pagination
-   *     description: Returns a list of all users in the database with pagination
+   *     summary: Fetches all users with pagination and search
+   *     description: Returns a list of all users in the database with pagination and search capabilities
    *     parameters:
    *       - in: query
-   *         name: limit
-   *         description: The number of items to return
-   *         schema:
-   *           type: integer
-   *         example: 10
-   *       - in: query
    *         name: page
-   *         description: The page number
    *         schema:
    *           type: integer
-   *         example: 1
+   *           default: 1
+   *         description: The page number
+   *       - in: query
+   *         name: limit
+   *         schema:
+   *           type: integer
+   *           default: 10
+   *         description: The number of items to return
+   *       - in: query
+   *         name: search
+   *         schema:
+   *           type: string
+   *         description: Search by name, email, or username
    *     responses:
    *       200:
-   *         description: A list of all users
+   *         description: A list of users
    *         content:
    *           application/json:
    *             schema:
    *               type: object
    *               properties:
-   *                 users:
-   *                   type: array
-   *                   items:
-   *                     $ref: '#/components/schemas/User'
-   *                 count:
-   *                   type: number
-   *                 limit:
-   *                   type: number
-   *                 offset:
-   *                   type: number
+   *                 success:
+   *                   type: boolean
+   *                 data:
+   *                   type: object
+   *                   properties:
+   *                     users:
+   *                       type: array
+   *                       items:
+   *                         $ref: '#/components/schemas/User'
+   *                     pagination:
+   *                       $ref: '#/components/schemas/PaginatedResponse'
    *       500:
    *         description: An error occurred while fetching users
    *         content:
@@ -55,12 +61,13 @@ export class UserController {
   static async getUsers(req: Request, res: Response) {
     const limit = parseInt(req.query.limit as string, 10) || 10;
     const page = parseInt(req.query.page as string, 10) || 1;
+    const search = req.query.search as string;
     const offset = (page - 1) * limit;
 
     try {
       const [users, count] = await Promise.all([
-        UserRepository.findAll(limit, offset),
-        UserRepository.count(),
+        UserRepository.findAll(limit, offset, search),
+        UserRepository.count(search), 
       ]);
 
       SuccessResponse.send(

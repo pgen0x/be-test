@@ -16,8 +16,15 @@
         "email": {
           "type": "string"
         },
+        "username": {
+          "type": "string"
+        },
         "password": {
           "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "default": "Active"
         },
         "role": {
           "type": "string",
@@ -55,8 +62,27 @@
         "id": {
           "type": "integer"
         },
+        "depositId": {
+          "type": "string"
+        },
+        "asset": {
+          "type": "string",
+          "default": "IDR"
+        },
         "amount": {
           "type": "number"
+        },
+        "amountNett": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "default": "PENDING",
+          "enum": [
+            "PENDING",
+            "SUCCESS",
+            "REJECTED"
+          ]
         },
         "user": {
           "$ref": "#/definitions/User"
@@ -77,8 +103,27 @@
         "id": {
           "type": "integer"
         },
+        "withdrawId": {
+          "type": "string"
+        },
+        "asset": {
+          "type": "string",
+          "default": "IDR"
+        },
         "amount": {
           "type": "number"
+        },
+        "amountNett": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "default": "PENDING",
+          "enum": [
+            "PENDING",
+            "SUCCESS",
+            "REJECTED"
+          ]
         },
         "user": {
           "$ref": "#/definitions/User"

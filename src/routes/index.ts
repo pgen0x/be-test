@@ -3,7 +3,10 @@ import type { Express } from 'express-serve-static-core';
 import { getLogger } from 'log4js';
 import { API_BASE_URL } from '../constants';
 import { AuthController } from '../controllers/AuthController';
+import { StatsController } from '../controllers/StatsController';
 import { UserController } from '../controllers/UserController';
+import { DepositController } from '../controllers/DepositController';
+import { WithdrawController } from '../controllers/WithdrawController';
 import { authMiddleware, validateUser } from '../middleware';
 import { awaitHandler } from '../utils/awaitHandler';
 const logger = getLogger('routes/index.ts'); // Pass the filename here
@@ -44,8 +47,26 @@ router.get(
 );
 
 router.get(
+  '/stats/dashboard',
+  authMiddleware(['ADMIN']),
+  awaitHandler(StatsController.getDashboardStats)
+);
+
+router.get(
+  '/deposits',
+  authMiddleware(['ADMIN']),
+  awaitHandler(DepositController.getDeposits)
+);
+
+router.get(
+  '/withdraws',
+  authMiddleware(['ADMIN']),
+  awaitHandler(WithdrawController.getWithdraws)
+);
+
+router.get(
   '/users',
-  authMiddleware(['USER']),
+  authMiddleware(['ADMIN']),
   awaitHandler(UserController.getUsers)
 );
 

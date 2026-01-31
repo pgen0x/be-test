@@ -22,7 +22,9 @@ model User {
   firstName     String
   lastName      String
   email         String     @unique
+  username      String     @unique
   password      String
+  status        String     @default("Active")
   role          String     @default("USER") // Roles: USER, ADMIN, etc.
   isKycVerified Boolean    @default(false)
   deposits      Deposit[]
@@ -31,22 +33,34 @@ model User {
   updatedAt     DateTime   @updatedAt
 }
 
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  REJECTED
+}
+
 model Deposit {
-  id        Int      @id @default(autoincrement())
-  amount    Float
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int               @id @default(autoincrement())
+  depositId  String            @unique
+  asset      String            @default("IDR")
+  amount     Float
+  amountNett Float
+  status     TransactionStatus @default(PENDING)
+  userId     Int
+  user       User              @relation(fields: [userId], references: [id])
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
 }
 
 model Withdraw {
-  id        Int      @id @default(autoincrement())
-  amount    Float
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int               @id @default(autoincrement())
+  withdrawId String            @unique
+  asset      String            @default("IDR")
+  amount     Float
+  amountNett Float
+  status     TransactionStatus @default(PENDING)
+  userId     Int
+  user       User              @relation(fields: [userId], references: [id])
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
 }
-
-// example relations models
